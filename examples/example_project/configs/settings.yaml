@@ -1,0 +1,49 @@
+data_dir: data
+output_dir: output
+
+
+input_data:
+  #----- CSV and Excel Tables -----
+  tables:
+    - name: old_flu_table
+      file: final_flu_postprocessed_2023-01-10.csv
+      network_dir: Q:/Projects/2023_Baseyear/FLU_and_Lockouts/old_flu
+      col_rename: {Juris_zn: juris_zn}
+
+    - name: flu_table
+      file: Zoning_2026_d3.xlsx
+      onedrive_dir: GIS - Sharing/Projects/FLU
+      force_download: true
+  
+  #----- GDB or Shapefile spatial layers -----
+  spatial_layers:
+    - name: test_layer
+      file: FLU2025_final.shp
+      network_dir: Q:/Projects/2023_Baseyear/FLU_and_Lockouts/GIS/FLU_2025/FLU_20260522/QC
+      col_rename: {Juris_zn: juris_zn}
+
+    - name: control_areas
+      file: control.gdb
+      gdb_layer: control26_2026_10_13
+      network_dir: Q:/Projects/2023_Baseyear/Political/control_geographies
+
+    - name: bremerton_zoning
+      file: bremerton_zoning.shp
+      onedrive_dir: GIS - Sharing/Projects/FLU
+
+  #----- ELMER Tables -----
+  elmer_tables:
+    - name: employment
+      schema: employment_summaries
+      sql_table: covered_employment_by_city_by_naics2
+      force_download: true
+
+  #----- ELMER-GEO Layers -----
+  elmer_geo_layers:
+    - name: urban_centers
+      sql_table: urban_centers
+      columns: ['id', 'name'] 
+
+
+steps:
+  - modeling_data_toolkit.pypyr_steps.load_data
