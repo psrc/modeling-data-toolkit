@@ -1,7 +1,9 @@
 data_dir: data
 output_dir: output
 
-
+#-------------------------------------------------------------------------------
+# inputs
+#-------------------------------------------------------------------------------
 input_data:
   #----- CSV and Excel Tables -----
   tables:
@@ -36,7 +38,6 @@ input_data:
     - name: employment
       schema: employment_summaries
       sql_table: covered_employment_by_city_by_naics2
-      force_download: true
 
   #----- ELMER-GEO Layers -----
   elmer_geo_layers:
@@ -45,5 +46,32 @@ input_data:
       columns: ['id', 'name'] 
 
 
+#-------------------------------------------------------------------------------
+# outputs
+#-------------------------------------------------------------------------------
+output_data:
+  #----- CSV Tables -----
+  tables:
+    - name: flu_table
+      file: flu.csv
+
+    - name: old_flu_table
+      file: old_flu/old_flu.csv
+
+  #----- GDB spatial layers -----
+  spatial_layers:
+    - name: test_layer
+      file: flu/flu.gdb
+      gdb_layer: flu
+
+    - name: control_areas
+      file: control.gdb
+      gdb_layer: control26
+
+
+#-------------------------------------------------------------------------------
+# pipeline steps
+#-------------------------------------------------------------------------------
 steps:
   - modeling_data_toolkit.pypyr_steps.load_data
+  - modeling_data_toolkit.pypyr_steps.write_outputs
